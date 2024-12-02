@@ -34,3 +34,7 @@ To install `psutil`, run:
 
 ```bash
 pip install psutil
+```
+
+```bash
+git clone https://github.com/tobiasGuta/SysMonitorTool.git
