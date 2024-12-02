@@ -2,6 +2,8 @@
 
 This Python-based tool allows you to monitor and log details of running processes on your system, including network connections and the executable paths of the processes. It helps track real-time system activity and can be useful for debugging, performance monitoring, and security assessments.
 
+![tool](https://github.com/user-attachments/assets/41853a49-0c0e-4f70-9c46-90b6ffd03845)
+
 ## Features
 
 - **Process Details**: The tool lists all currently running processes on your system, including:
