@@ -41,7 +41,7 @@ git clone https://github.com/tobiasGuta/SysMonitorTool.git
 ```
 
 ## How It Works
-- **Process Iteration: The script iterates through all running processes on your system using the psutil.process_iter() function.
-- **Network Connections: For each process, it fetches network connections associated with the process using proc.net_connections(kind='inet').
-- **Executable Path: The script checks the path to the executable for each process using proc.exe().
-- **Logging: All relevant information (PID, name, status, username, network connections, and executable path) is printed to the console and saved to a log file (process_log.txt).
+- Process Iteration: The script iterates through all running processes on your system using the psutil.process_iter() function.
+- Network Connections: For each process, it fetches network connections associated with the process using proc.net_connections(kind='inet').
+- Executable Path: The script checks the path to the executable for each process using proc.exe().
+- Logging: All relevant information (PID, name, status, username, network connections, and executable path) is printed to the console and saved to a log file (process_log.txt).
