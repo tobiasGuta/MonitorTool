@@ -20,6 +20,8 @@ This Python-based tool allows you to monitor and log details of running processe
 
 - **Log File**: The tool writes all process and network connection details to a log file (`process_log.txt`), enabling future reference and analysis.
 
+- **Filtering**: You can filter the output based on specific criteria, for now **process name** and **IP address** are supported.
+
 ## Use Cases
 
 - **System Monitoring**: Monitor the processes and network activity running on your machine.
