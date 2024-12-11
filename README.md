@@ -7,7 +7,7 @@ py .\proMon.py
 ```
 ![tool](https://github.com/user-attachments/assets/41853a49-0c0e-4f70-9c46-90b6ffd03845)
 ```bash
-py .\proMon.py 
+py .\proMon.py -i 0.0.0.0
 ```
 ![Screenshot 2024-12-11 180128](https://github.com/user-attachments/assets/e91bea9f-0c09-4018-ab6b-eda9c8549116)
 ![Screenshot 2024-12-11 180238](https://github.com/user-attachments/assets/4644d996-edd6-437f-93fd-5c425656cb5a)
