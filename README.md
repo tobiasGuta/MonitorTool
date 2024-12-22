@@ -2,14 +2,22 @@
 
 This Python-based tool allows you to monitor and log details of running processes on your system, including network connections and the executable paths of the processes. It helps track real-time system activity and can be useful for debugging, performance monitoring, and security assessments.
 
+# real-time monitoring
+
 ```bash
 py .\proMon.py
 ```
 ![tool](https://github.com/user-attachments/assets/41853a49-0c0e-4f70-9c46-90b6ffd03845)
+
+Note: You can use this with --interval or -t to refresh every second, for example, -t 10
+
+# Filter by IP using -i
 ```bash
 py .\proMon.py -i 0.0.0.0
 ```
 ![Screenshot 2024-12-11 180128](https://github.com/user-attachments/assets/e91bea9f-0c09-4018-ab6b-eda9c8549116)
+
+# Filter by process name using -p
 ```bash
 py .\proMon.py -p svchost.exe
 ```
