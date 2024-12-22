@@ -8,13 +8,17 @@ parser.add_argument('--process', '-p', help='Filter by process name (case-insens
 parser.add_argument('--ip', '-i', help='Filter by IP address (local or remote)')
 args = parser.parse_args()
 
+sort_field = 'pid'
+scroll_offset = 0
+
 def main(stdscr):
+    global sort_field, scroll_offset
     curses.curs_set(0)  # Hide the cursor
     stdscr.nodelay(1)  # Make getch() non-blocking
-    stdscr.timeout(500)  # Refresh every 500 milliseconds
+    stdscr.timeout(100)  # Refresh every 100 milliseconds
 
     while True:
-        stdscr.clear()  # Clear the screen
+        stdscr.erase()  # Clear the screen more efficiently
         height, width = stdscr.getmaxyx()  # Get the size of the terminal window
 
         # List all running processes
@@ -25,8 +29,10 @@ def main(stdscr):
         stdscr.addstr(1, 0, "-" * (width-1))  # Print separator to screen
 
         row = 2
-        for proc in psutil.process_iter(['pid', 'name', 'status', 'username']):
-            if row >= height:
+        processes = sorted(psutil.process_iter(['pid', 'name', 'status', 'username']), key=lambda p: p.info.get(sort_field, ''))
+        processes = processes[scroll_offset:]  # Apply scroll offset
+        for proc in processes:
+            if row >= height - 3:
                 break  # Stop if we exceed the terminal height
             try:
                 pid = proc.info['pid']
@@ -50,7 +56,7 @@ def main(stdscr):
 
                 # For each connection, display the relevant information
                 for conn in connections:
-                    if row >= height:
+                    if row >= height - 3:
                         break  # Stop if we exceed the terminal height
                     local_address = f"{conn.laddr.ip}:{conn.laddr.port}" if conn.laddr else "N/A"
                     remote_address = f"{conn.raddr.ip}:{conn.raddr.port}" if conn.raddr else "N/A"
@@ -72,7 +78,7 @@ def main(stdscr):
 
                 # If no IP filter or no connections, show process info
                 if not args.ip or (not connections and not args.ip):
-                    if row >= height:
+                    if row >= height - 3:
                         break  # Stop if we exceed the terminal height
                     output = f"{pid:<10} {name:<25} {status:<15} {username:<20} {'N/A':<25} {'N/A':<25} {'N/A':<20} {path:<50}"
                     if len(output) > width:
@@ -83,9 +89,59 @@ def main(stdscr):
             except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                 pass
 
+        # Display the bottom bar with options
+        bottom_bar = "F1: Sort Options | F2: Kill by PID | Up/Down: Scroll | q: Quit"
+        stdscr.addstr(height - 2, 0, bottom_bar[:width-1])
+
         stdscr.refresh()  # Refresh the screen
 
-        if stdscr.getch() == ord('q'):  # Exit on 'q' key press
+        key = stdscr.getch()
+        if key == ord('q'):  # Exit on 'q' key press
             break
+        elif key == curses.KEY_F1:
+            stdscr.nodelay(0)  # Make getch() blocking
+            sort_options = "Sort by: 1: PID | 2: Name | 3: Status | 4: Username | 5: Local Address | 6: Remote Address | 7: Path"
+            stdscr.addstr(height - 1, 0, sort_options[:width-1])
+            stdscr.refresh()
+            sort_key = stdscr.getch()
+            if sort_key == ord('1'):
+                sort_field = 'pid'
+            elif sort_key == ord('2'):
+                sort_field = 'name'
+            elif sort_key == ord('3'):
+                sort_field = 'status'
+            elif sort_key == ord('4'):
+                sort_field = 'username'
+            elif sort_key == ord('5'):
+                sort_field = 'local_address'
+            elif sort_key == ord('6'):
+                sort_field = 'remote_address'
+            elif sort_key == ord('7'):
+                sort_field = 'path'
+            stdscr.nodelay(1)  # Make getch() non-blocking again
+        elif key == curses.KEY_F2:
+            curses.echo()
+            stdscr.nodelay(0)  # Make getch() blocking
+            stdscr.addstr(height - 1, 0, "Enter PID to kill: ")
+            stdscr.clrtoeol()  # Clear to the end of the line
+            stdscr.refresh()
+            pid = stdscr.getstr().decode('utf-8')
+            if pid.isdigit():
+                try:
+                    psutil.Process(int(pid)).kill()
+                    stdscr.addstr(height - 1, 0, f"Process {pid} killed successfully. Press any key to continue.")
+                except Exception as e:
+                    stdscr.addstr(height - 1, 0, f"Failed to kill process {pid}: {e}. Press any key to continue.")
+            else:
+                stdscr.addstr(height - 1, 0, "Invalid PID. Press any key to continue.")
+            stdscr.clrtoeol()  # Clear to the end of the line
+            stdscr.refresh()
+            stdscr.getch()
+            curses.noecho()
+            stdscr.nodelay(1)  # Make getch() non-blocking again
+        elif key == curses.KEY_UP:
+            scroll_offset = max(0, scroll_offset - 1)
+        elif key == curses.KEY_DOWN:
+            scroll_offset += 1
 
 curses.wrapper(main)
