@@ -45,6 +45,43 @@ py .\proMon.py -p svchost.exe
 - **Log File**: Writes all process and network connection details to a log file (`process_log.txt`), enabling future reference and analysis.
 - **Filtering**: Allows filtering the output based on specific criteria, such as process name and IP address.
 
+## Security Features
+
+### Process Protection
+- Root processes are highlighted in red
+- Root processes can only be terminated when running the tool with root/admin privileges
+- Regular users can only terminate processes they own
+- Built-in protection against unauthorized process termination
+
+### Rate Limiting
+- Process termination is rate-limited to prevent abuse
+- Maximum of one kill operation every 3 seconds
+
+### Logging
+- All actions are logged to `~/.procmon/procmon.log`
+- Logs include:
+  - Process termination attempts
+  - Unauthorized access attempts
+  - Application starts/stops
+  - Error conditions
+  - Privilege level changes
+
+### Privilege Levels
+- Regular user mode:
+  - Can view all processes
+  - Can only terminate owned processes
+  - Cannot terminate root/system processes
+- Root/Admin mode:
+  - Full process termination rights
+  - Can terminate any process
+  - Required for system/root process management
+
+### Security Best Practices
+- Run with regular user privileges for routine monitoring
+- Only use root/admin privileges when necessary
+- Monitor the log file for unauthorized access attempts
+- Review process ownership before termination
+
 ## Use Cases
 
 - **System Monitoring**: Monitor the processes and network activity running on your machine.
