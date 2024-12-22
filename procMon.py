@@ -17,6 +17,10 @@ def main(stdscr):
     stdscr.nodelay(1)  # Make getch() non-blocking
     stdscr.timeout(100)  # Refresh every 100 milliseconds
 
+    # Initialize color pairs
+    curses.start_color()
+    curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_GREEN)
+
     while True:
         stdscr.erase()  # Clear the screen more efficiently
         height, width = stdscr.getmaxyx()  # Get the size of the terminal window
@@ -91,7 +95,9 @@ def main(stdscr):
 
         # Display the bottom bar with options
         bottom_bar = "F1: Sort Options | F2: Kill by PID | Up/Down: Scroll | q: Quit"
+        stdscr.attron(curses.color_pair(1))
         stdscr.addstr(height - 2, 0, bottom_bar[:width-1])
+        stdscr.attroff(curses.color_pair(1))
 
         stdscr.refresh()  # Refresh the screen
 
