@@ -3,6 +3,7 @@ import argparse
 import time
 import signal
 import sys
+import os 
 
 # Set up argument parsing
 parser = argparse.ArgumentParser(description='Monitor processes with optional filtering')
@@ -25,6 +26,7 @@ signal.signal(signal.SIGINT, handle_quit_signal)
 
 # Function to log processes
 def log_processes():
+    os.system('cls' if os.name == 'nt' else 'clear')  # Clear the console screen
     with open(log_file_path, "w") as log_file:
         # List all running processes
         header = f"{'PID':<10} {'Name':<25} {'Status':<15} {'Username':<20} {'Local Address':<25} {'Remote Address':<25} {'Connection Status':<20} {'Path':<50}"
