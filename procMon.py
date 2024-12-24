@@ -3,13 +3,14 @@ import argparse
 import time
 import signal
 import sys
-import os 
+import os
 
 # Set up argument parsing
 parser = argparse.ArgumentParser(description='Monitor processes with optional filtering')
 parser.add_argument('--process', '-p', help='Filter by process name (case-insensitive)')
 parser.add_argument('--ip', '-i', help='Filter by IP address (local or remote)')
 parser.add_argument('--interval', '-t', type=int, default=5, help='Update interval in seconds')
+parser.add_argument('--no-clear', '-nc', action='store_true', help='Disable clearing the console before each update')
 args = parser.parse_args()
 
 # Flag to control the quit behavior
@@ -26,7 +27,9 @@ signal.signal(signal.SIGINT, handle_quit_signal)
 
 # Function to log processes
 def log_processes():
-    os.system('cls' if os.name == 'nt' else 'clear')  # Clear the console screen
+    if not args.no_clear:  # Check if 'no-clear' argument is not set
+        os.system('cls' if os.name == 'nt' else 'clear')  # Clear the console screen
+
     with open(log_file_path, "w") as log_file:
         # List all running processes
         header = f"{'PID':<10} {'Name':<25} {'Status':<15} {'Username':<20} {'Local Address':<25} {'Remote Address':<25} {'Connection Status':<20} {'Path':<50}"
@@ -34,7 +37,6 @@ def log_processes():
         log_file.write(header + "\n")  # Write header to log file
         print("-" * 150)  # Print separator to console
         log_file.write("-" * 150 + "\n")  # Write separator to log file
-
         for proc in psutil.process_iter(['pid', 'name', 'status', 'username']):
             try:
                 pid = proc.info['pid']
@@ -51,11 +53,9 @@ def log_processes():
                 
                 # Get network connections associated with the process
                 connections = proc.net_connections(kind='inet')
-
                 # Skip if IP filter is specified and process has no connections
                 if args.ip and not connections:
                     continue
-
                 # For each connection, display the relevant information
                 connection_found = False
                 for conn in connections:
@@ -77,13 +77,11 @@ def log_processes():
                     
                     # Write to log file
                     log_file.write(output + "\n")
-
                 # If no IP filter or no connections, show process info
                 if not args.ip or (not connections and not args.ip):
                     output = f"{pid:<10} {name:<25} {status:<15} {username:<20} {'N/A':<25} {'N/A':<25} {'N/A':<20} {path:<50}"
                     print(output)
                     log_file.write(output + "\n")
-
             except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                 pass
 
