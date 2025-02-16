@@ -41,6 +41,13 @@ py .\proMon.py -p svchost.exe
 
 - **Filtering**: You can filter the output based on specific criteria, for now **process name** and **IP address** are supported.
 
+## ProcChangeLogger.py
+Monitoring for Process Command Lines
+continuously monitoring process changes on a Windows machine, checking for new processes that start and old ones that stop. Monitoring for Process Command Lines
+It collects process command lines every two seconds, compares them with the previous snapshot, and displays any changes detected.
+
+![Screenshot 2025-02-16 105955](https://github.com/user-attachments/assets/fa58c7dd-8a7c-4abf-92a6-e1fba3be28e1)
+
 ## Use Cases
 
 - **System Monitoring**: Monitor the processes and network activity running on your machine.
@@ -62,6 +69,9 @@ pip install psutil
 ```bash
 git clone https://github.com/tobiasGuta/SysMonitorTool.git
 ```
+
+
+
 
 ## How It Works
 - Process Iteration: The script iterates through all running processes on your system using the psutil.process_iter() function.
