@@ -55,16 +55,17 @@ It collects process command lines every two seconds, compares them with the prev
 - **Debugging**: Track down processes that may be consuming excessive resources or misbehaving.
 - **Penetration Testing**: Use the tool to gather insights into processes running on a target machine during a red team exercise.
 
-## Requirements
+## Sniffer.py
 
-- Python 3.x
-- `psutil` Python library
-
-To install `psutil`, run:
+This Python-based network sniffer tool is used to capture and analyze raw IP packets from the network. It creates a raw socket that listens for incoming network traffic and displays information about the source and destination IP addresses, as well as the protocol being used (ICMP, TCP, UDP, etc.).
 
 ```bash
-pip install psutil
+python sniffer.py -H 192.168.1.1
 ```
+
+![image](https://github.com/user-attachments/assets/9173bd7c-5e25-417b-aa83-613839323ab9)
+
+## Installation
 
 ```bash
 git clone https://github.com/tobiasGuta/SysMonitorTool.git
