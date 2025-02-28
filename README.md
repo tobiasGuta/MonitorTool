@@ -65,7 +65,7 @@ python sniffer.py -H 192.168.1.1
 
 ![image](https://github.com/user-attachments/assets/9173bd7c-5e25-417b-aa83-613839323ab9)
 
-## sniffer_windows.py
+## sniffer_linux.py
 
 ```bash
 sudo python3 sniffer.py -i ens33 -o checking.pcap
