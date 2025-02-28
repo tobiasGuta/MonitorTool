@@ -55,7 +55,7 @@ It collects process command lines every two seconds, compares them with the prev
 - **Debugging**: Track down processes that may be consuming excessive resources or misbehaving.
 - **Penetration Testing**: Use the tool to gather insights into processes running on a target machine during a red team exercise.
 
-## Sniffer.py
+## sniffer_windows.py
 
 This Python-based network sniffer tool is used to capture and analyze raw IP packets from the network. It creates a raw socket that listens for incoming network traffic and displays information about the source and destination IP addresses, as well as the protocol being used (ICMP, TCP, UDP, etc.).
 
@@ -64,6 +64,15 @@ python sniffer.py -H 192.168.1.1
 ```
 
 ![image](https://github.com/user-attachments/assets/9173bd7c-5e25-417b-aa83-613839323ab9)
+
+## sniffer_windows.py
+
+```bash
+sudo python3 sniffer.py -i ens33 -o checking.pcap
+```
+
+![image](https://github.com/user-attachments/assets/b2625c4b-c3aa-4d8e-8033-d48126e13b6a)
+
 
 ## Installation
 
