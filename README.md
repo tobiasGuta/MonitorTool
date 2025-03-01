@@ -73,6 +73,14 @@ sudo python3 sniffer.py -i ens33 -o checking.pcap
 
 ![image](https://github.com/user-attachments/assets/b2625c4b-c3aa-4d8e-8033-d48126e13b6a)
 
+## fping.py
+
+```bash
+sudo python3 fping.py 192.168.232.0/24 -a
+```
+
+![image](https://github.com/user-attachments/assets/e8eff5e4-3690-48c3-bb39-c97ecbe1eceb)
+
 
 ## Installation
 
